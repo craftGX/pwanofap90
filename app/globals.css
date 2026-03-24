@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Mode sombre par défaut */
+/* ===== Base ===== */
+
 :root {
   color-scheme: dark;
 }
@@ -16,10 +17,11 @@ body {
   @apply min-h-screen flex flex-col;
 }
 
-/* Conteneur principal: s'adapte de 5" à tablette */
+/* Conteneur global : empêche tout débordement horizontal,
+   s’adapte du petit smartphone à la tablette */
 .app-shell {
   @apply mx-auto w-full px-3;
-  max-width: 420px; /* 5–6" */
+  max-width: 420px; /* smartphone 5–6" */
 }
 
 /* Thème clair */
@@ -31,12 +33,12 @@ html.light body {
   @apply bg-slate-50 text-slate-900;
 }
 
-/* Surfaces cartes */
+/* Cartes */
 .card-surface {
   @apply rounded-2xl border border-slate-700 bg-slate-900/80 shadow-xl px-3 py-3;
 }
 
-/* Table + calendrier */
+/* Table & calendrier */
 .history-table-wrapper {
   @apply max-h-64 overflow-auto;
 }
@@ -53,21 +55,19 @@ html.light body {
   @apply flex items-center justify-center rounded-md border text-[9px] w-7 h-7;
 }
 
-/* PETITS SMARTPHONES ~5" (<=360px) */
+/* ===== Petits smartphones (~5") ===== */
 @media (max-width: 360px) {
   html,
-  body,
-  .app-shell,
-  main {
-    @apply max-w-full overflow-x-hidden;
-  }
-
   body {
-    @apply text-[11px];
+    @apply max-w-full overflow-x-hidden;
   }
 
   .app-shell {
     @apply px-2;
+  }
+
+  body {
+    @apply text-[11px];
   }
 
   .card-surface {
@@ -94,40 +94,34 @@ html.light body {
   }
 }
 
-/* SMARTPHONES 5.5–7" (~360–639px) */
+/* ===== Smartphones 5.5–7" ===== */
 @media (min-width: 361px) and (max-width: 639px) {
   html,
-  body,
-  .app-shell,
-  main {
-    @apply max-w-full overflow-x-hidden;
-  }
-
   body {
-    @apply text-sm;
+    @apply max-w-full overflow-x-hidden;
   }
 
   .app-shell {
     @apply px-3;
   }
 
+  body {
+    @apply text-sm;
+  }
+
   .card-surface {
     @apply px-3 py-3;
   }
-
-  .history-table {
-    @apply text-[11px];
-  }
 }
 
-/* TABLETTES 8–11" (>=640px) */
+/* ===== Tablettes 8–11" ===== */
 @media (min-width: 640px) {
   body {
     @apply text-base;
   }
 
   .app-shell {
-    max-width: 768px; /* 11 pouces */
+    max-width: 768px; /* tablette 11" */
     @apply px-6;
   }
 
@@ -140,7 +134,7 @@ html.light body {
   }
 }
 
-/* Variante claire carte */
+/* Thème clair carte */
 html.light .card-surface {
   @apply border-slate-200 bg-white shadow-lg;
 }

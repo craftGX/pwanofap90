@@ -241,8 +241,12 @@ export default function HomePage() {
     openModalConfirm(
       currentEditId ? "Modifier la journée" : "Valider la journée",
       currentEditId
-        ? `Mettre à jour la journée du ${dateObj.toLocaleDateString("fr-FR")} avec le niveau ${level} ?`
-        : `Enregistrer la journée du ${dateObj.toLocaleDateString("fr-FR")} avec le niveau ${level} ?`,
+        ? `Mettre à jour la journée du ${dateObj.toLocaleDateString(
+            "fr-FR",
+          )} avec le niveau ${level} ?`
+        : `Enregistrer la journée du ${dateObj.toLocaleDateString(
+            "fr-FR",
+          )} avec le niveau ${level} ?`,
       () => {
         setDays((prev) => {
           let copy = [...prev];
@@ -372,7 +376,7 @@ export default function HomePage() {
       cells.push(
         <div
           key={`empty-${i}`}
-          className="w-7 h-7 rounded-md bg-slate-900/60 border border-slate-700 opacity-30"
+          className="calendar-cell bg-slate-900/60 border border-slate-700 opacity-30"
         />,
       );
     }
@@ -384,8 +388,7 @@ export default function HomePage() {
       const dateStr = localDateString(dateLocal);
       const entry = sortedDays.find((x) => x.date === dateStr);
 
-      let className =
-        "w-7 h-7 rounded-md flex items-center justify-center text-[10px] sm:text-[11px] font-semibold border transition";
+      let className = "calendar-cell border transition";
 
       if (!entry) {
         className += " bg-slate-900/60 text-slate-500 border-slate-700";
@@ -459,7 +462,7 @@ export default function HomePage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-5xl flex-col px-3 py-4 sm:px-4 sm:py-6">
+    <main className="flex min-h-screen flex-col py-4 space-y-4">
       <header className="mb-3 flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-lg font-semibold tracking-[0.16em] uppercase text-emerald-400">
@@ -501,12 +504,13 @@ export default function HomePage() {
       </header>
 
       <motion.div
-        className="grid gap-4 md:grid-cols-[1.02fr,1.18fr]"
+        className="grid gap-4 md:grid-cols-2"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <section className="card-surface p-4 sm:p-5">
+        {/* Colonne 1 : journée en cours */}
+        <section className="card-surface">
           <div className="mb-3 flex items-center justify-between border-b border-slate-700 pb-2">
             <div className="text-xs font-semibold uppercase tracking-[0.16em]">
               Journée en cours
@@ -659,7 +663,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="card-surface p-4 sm:p-5">
+        {/* Colonne 2 : historique & calendrier */}
+        <section className="card-surface">
           <div className="mb-3 flex items-center justify-between border-b border-slate-700 pb-2">
             <div className="text-xs font-semibold uppercase tracking-[0.16em]">
               Historique & stats
@@ -706,9 +711,10 @@ export default function HomePage() {
               </span>
             </div>
 
+            {/* Historique */}
             <div className="rounded-2xl border border-slate-700 bg-slate-950/80">
-              <div className="max-h-64 overflow-auto">
-                <table className="w-full min-w-[480px] border-collapse text-[11px] sm:min-w-0">
+              <div className="history-table-wrapper">
+                <table className="history-table">
                   <thead className="sticky top-0 bg-slate-950">
                     <tr>
                       <th className="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">
@@ -764,18 +770,20 @@ export default function HomePage() {
                               <span className={pillClass}>{levelLabel[d.level]}</span>
                             </td>
                             <td className="px-3 py-2 align-top text-slate-200">
-                              <div className="text-xs">{d.message || ""}</div>
+                              <div className="text-xs break-words">{d.message || ""}</div>
                               {d.note && (
-                                <div className="mt-1 text-[11px] text-slate-400">✏️ {d.note}</div>
+                                <div className="mt-1 text-[11px] text-slate-400 break-words">
+                                  ✏️ {d.note}
+                                </div>
                               )}
                               {d.triggers && (
-                                <div className="mt-1 text-[11px] text-yellow-300">
+                                <div className="mt-1 text-[11px] text-yellow-300 break-words">
                                   ⚠️ Triggers : {d.triggers}
                                 </div>
                               )}
                             </td>
                             <td className="px-3 py-2 align-top">
-                              <div className="flex gap-1">
+                              <div className="flex flex-wrap gap-1">
                                 <button
                                   className="rounded-full border border-sky-500 bg-slate-900/80 px-2 py-1 text-[10px] text-sky-400 hover:bg-slate-900"
                                   type="button"
@@ -803,6 +811,7 @@ export default function HomePage() {
               </div>
             </div>
 
+            {/* Calendrier */}
             <div className="rounded-2xl border border-slate-700 bg-slate-950/80 p-3">
               <div className="mb-2 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
                 Calendrier de {monthName}
@@ -818,7 +827,7 @@ export default function HomePage() {
                   <span className="h-2.5 w-2.5 rounded-full bg-sky-500" /> Neutre / lutte
                 </span>
               </div>
-              <div className="grid grid-cols-7 gap-1 justify-items-center">{cells}</div>
+              <div className="calendar-grid">{cells}</div>
             </div>
           </div>
         </section>
@@ -831,7 +840,7 @@ export default function HomePage() {
             if (e.target === e.currentTarget) closeModal();
           }}
         >
-          <div className="card-surface w-full max-w-md p-4">
+          <div className="card-surface w-full max-w-md">
             <h2 className="mb-2 text-center text-sm font-semibold">{modalTitle}</h2>
             <p className="mb-4 text-center text-xs text-slate-300">{modalMessage}</p>
             <div className="flex justify-center gap-2">
