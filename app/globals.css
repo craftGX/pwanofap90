@@ -2,17 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mode sombre par défaut */
 :root {
   color-scheme: dark;
 }
 
-/* Dark par défaut */
 html {
   @apply bg-slate-950 text-slate-50;
 }
 
 body {
-  @apply min-h-screen;
+  @apply min-h-screen flex flex-col;
+}
+
+/* Contrainte de largeur pour éviter l'effet "full écran" moche sur grands mobiles */
+.app-shell {
+  @apply mx-auto w-full max-w-md px-3;
 }
 
 /* Thème clair */
@@ -27,15 +32,49 @@ html.light body {
 /* Surfaces cartes */
 .card-surface {
   @apply rounded-2xl border border-slate-700 bg-slate-900/80 shadow-xl;
+  @apply px-4 py-4;
 }
 
-/* Sur mobile, on accepte un peu plus de padding vertical */
+/* Sur mobile (<=640px) : padding plus compact et suppression des gros gaps globaux */
 @media (max-width: 640px) {
+  body {
+    @apply text-sm;
+  }
+
+  .app-shell {
+    @apply px-2;
+  }
+
   .card-surface {
     @apply px-3 py-3;
   }
+
+  .card-header {
+    @apply mb-2;
+  }
+
+  .card-title {
+    @apply text-base;
+  }
+
+  .card-subtitle {
+    @apply text-xs text-slate-400;
+  }
+
+  .card-actions {
+    @apply gap-1;
+  }
+
+  .primary-button {
+    @apply h-9 px-3 text-sm;
+  }
+
+  .secondary-button {
+    @apply h-9 px-3 text-xs;
+  }
 }
 
+/* Variante claire pour la carte */
 html.light .card-surface {
   @apply border-slate-200 bg-white shadow-lg;
 }
