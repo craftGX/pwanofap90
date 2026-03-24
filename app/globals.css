@@ -15,7 +15,7 @@ body {
   @apply min-h-screen flex flex-col;
 }
 
-/* Contrainte de largeur pour éviter l'effet "full écran" moche sur grands mobiles */
+/* Conteneur principal */
 .app-shell {
   @apply mx-auto w-full max-w-md px-3;
 }
@@ -31,11 +31,29 @@ html.light body {
 
 /* Surfaces cartes */
 .card-surface {
-  @apply rounded-2xl border border-slate-700 bg-slate-900/80 shadow-xl;
-  @apply px-4 py-4;
+  @apply rounded-2xl border border-slate-700 bg-slate-900/80 shadow-xl px-4 py-4;
 }
 
-/* Sur mobile (<=640px) : padding plus compact et suppression des gros gaps globaux */
+/* TABLEAU HISTORIQUE : pas de min-width globale sur mobile */
+.history-table-wrapper {
+  @apply max-h-64 overflow-auto;
+}
+
+.history-table {
+  @apply w-full border-collapse text-[11px];
+}
+
+/* CALENDRIER : cellules compactes pour mobile */
+.calendar-grid {
+  @apply grid grid-cols-7 gap-1 justify-items-center;
+}
+
+.calendar-cell {
+  @apply flex items-center justify-center rounded-md border text-[10px] font-semibold
+         w-7 h-7 sm:w-8 sm:h-8 sm:text-[11px];
+}
+
+/* MOBILE (<=640px) */
 @media (max-width: 640px) {
   body {
     @apply text-sm;
@@ -47,6 +65,11 @@ html.light body {
 
   .card-surface {
     @apply px-3 py-3;
+  }
+
+  /* réductions des marges / tailles */
+  h1 {
+    @apply text-xl;
   }
 
   .card-header {
@@ -62,19 +85,32 @@ html.light body {
   }
 
   .card-actions {
-    @apply gap-1;
+    @apply gap-1 flex-wrap;
   }
 
-  .primary-button {
-    @apply h-9 px-3 text-sm;
-  }
-
+  button,
+  .btn,
+  .primary-button,
   .secondary-button {
-    @apply h-9 px-3 text-xs;
+    @apply text-[10px] px-3 py-1;
+  }
+
+  input,
+  select,
+  textarea {
+    @apply text-xs;
+  }
+
+  /* Évite les débordements horizontaux globaux */
+  main,
+  .app-shell,
+  body,
+  html {
+    @apply max-w-full overflow-x-hidden;
   }
 }
 
-/* Variante claire pour la carte */
+/* Variante claire carte */
 html.light .card-surface {
   @apply border-slate-200 bg-white shadow-lg;
 }
